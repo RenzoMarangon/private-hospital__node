@@ -1,9 +1,15 @@
 const express = require('express');
+const cors = require('cors');
+const { dbConnection } = require('../database/config');
 
 class Server {
     constructor(){
         this.app = express();
         this.port = process.env.PORT;
+        this.usersPacientesPath = '/api/pacientes'
+
+        //Conectar a DB
+        this.connectDB();
 
         //Middlewares
         this.middlewares();
@@ -13,17 +19,24 @@ class Server {
     }
 
     routes(){
-        this.app.get('/api',(req, res) => {
-            res.send('Hello world'); 
-        });
 
-        this.app.get('*',(req, res) => {
-            res.send('404 | page not found'); 
-        });
+      this.app.use( this.usersPacientesPath, require('../routes/userPacientes') );
     }
 
 
+    async connectDB(){
+        await dbConnection();
+    }
+
     middlewares(){
+
+        //CORS 
+        this.app.use( cors() );
+
+        //Lectura y parseo del body (a formato json)
+        this.app.use(express.json());
+
+        //Servir contenido estatico
         this.app.use( express.static( 'public' ));
     }
 
