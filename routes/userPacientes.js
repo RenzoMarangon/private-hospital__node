@@ -9,7 +9,14 @@ const {
 
 } = require('../controllers/user');
 const { isRoleInDB, isEmailInDB, isUserInDB } = require('../database/db-validators');
-const { validateErrors } = require('../middlewares/validate-errors');
+
+
+const { 
+    validateErrors,
+    validateJWT,
+    isAdminRole,
+    isRole, 
+    } = require('../middlewares/index')
 
 const router = Router();
 
@@ -34,6 +41,9 @@ router.put('/:id',[
 ],userPut)
 
 router.delete('/:id',[
+    validateJWT,
+    isAdminRole,
+    // isRole('ADMIN_ROLE'),
     check('id').custom( isUserInDB ),
     check('id').isMongoId(),
     validateErrors
