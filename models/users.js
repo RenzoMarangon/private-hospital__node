@@ -23,6 +23,10 @@ const UsersSchema = Schema({
         required: [true,'Name required'],
         emun: ['ADMIN_ROLE','USER_ROLE']
     },
+    google:{
+        type:Boolean,
+        default:false,
+    },
     state:{
         type:Boolean,
         default:true,
@@ -31,7 +35,7 @@ const UsersSchema = Schema({
 
 
 UsersSchema.methods.toJSON = function(){
-    const { __v, _id , password, ...user } = this.toObject();
+    const { __v, _id , password, google,...user } = this.toObject();
     user.uid = _id;
     return user;
 
