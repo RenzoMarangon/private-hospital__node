@@ -61,25 +61,28 @@ const googleSignIn = async(req, res = response) => {
 
     const { id_token } = req.body;
 
+
     try {
         
-        const { name, img, email } = await googleVerify( id_token );
+        const payload = await googleVerify( id_token );
+
+        const {name, email, img} = payload;
 
         let user = await User.findOne({ email });
 
 
-        if(!user)
+        if(!!!user)
         {
             const data = {
                 name,
                 email,
-                password:"",
+                password:"asd",
                 img,
-                google:true
+                google:true,
+                role:'USER_ROLE'
             }
-
             user = new User( data );
-            await user.save();
+            await user.save().catch( console.log )
         }
 
         if( !user.state )
