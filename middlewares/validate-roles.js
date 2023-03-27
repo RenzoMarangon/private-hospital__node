@@ -3,20 +3,20 @@ const { response } = require("express");
 
 const isAdminRole = (req, res = response, next ) => 
 {
-    if( !req.authenticatedUser )
+    if( !req.authenticatedPatient )
     {   //Validar que esta llegando el token
         return res.status(500).json({
             msg:"Can't validate role before validate token"
         })
     }
 
-    const { role, name } = req.authenticatedUser;
+    const { role, name } = req.authenticatedPatient;
 
 
     if( role !== 'ADMIN_ROLE')
     {
         return res.status(401).json({
-            msg:"User is don't admin"
+            msg:"Patient is don't admin"
         })
     }
 
@@ -27,17 +27,17 @@ const isAdminRole = (req, res = response, next ) =>
 const isRole = (...roles) => {
     return ( req, res = response, next ) =>{
         
-        if( !req.authenticatedUser )
+        if( !req.authenticatedPatient )
         {   //Validar que esta llegando el token
             return res.status(500).json({
                 msg:"Can't validate role before validate token"
             })
         }
 
-        if( !roles.includes( req.authenticatedUser.role ) )
+        if( !roles.includes( req.authenticatedPatient.role ) )
         {
             return res.status(401).json({
-                msg:`${ req.authenticatedUser.role } is an invalid role, valid roles: ${ roles }`
+                msg:`${ req.authenticatedPatient.role } is an invalid role, valid roles: ${ roles }`
             })
         }
 

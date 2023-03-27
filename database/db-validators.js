@@ -1,5 +1,8 @@
 const Role = require('../models/role');
-const User = require('../models/users');
+const Patient = require('../models/patient');
+const Turn = require('../models/turn');
+
+const moment = require('moment')
 
 const isRoleInDB = async(role = '') => {
     const roleExist = await Role.findOne({ role });
@@ -12,7 +15,7 @@ const isRoleInDB = async(role = '') => {
 
 const isEmailInDB = async(email = '') => {
     //Verificar si el correo existe
-    const emailExist = await User.findOne({ email })
+    const emailExist = await Patient.findOne({ email })
 
     if( emailExist )
     {
@@ -20,16 +23,28 @@ const isEmailInDB = async(email = '') => {
     }
 }
 
-const isUserInDB = async( id ) => {
-    const userExist = await User.findById( id );
+const isPatientInDB = async( id ) => {
+    const patientExist = await Patient.findById( id );
 
-    if( !userExist )
+    if( !patientExist )
     {
-        throw new Error(`User with id: ${ id } doesn't exist`);
+        throw new Error(`Patient with id: ${ id } doesn't exist`);
     }
 }
 
+const timeIsValid = ( date, time ) => {
 
+    if(!moment( `${date} ${time}`, 'YYYY-MM-DD HH:mm',true ),isValid() ){
+        throw new Error(`Date or time are wrong`);
+    }
+
+}
+
+
+const isTimeInDB = () => {
+
+
+}
 
 
 
@@ -37,5 +52,6 @@ const isUserInDB = async( id ) => {
 module.exports = {
     isRoleInDB,
     isEmailInDB,
-    isUserInDB
+    isPatientInDB,
+    timeIsValid
 }

@@ -1,7 +1,7 @@
 const { response } = require("express");
 const bcryptjs = require('bcryptjs');
 
-const User = require('../models/users');
+const Patient = require('../models/patient');
 const { generateJWT } = require("../database/generate-jwt");
 const { googleVerify } = require("../database/google-verify");
 
@@ -13,37 +13,37 @@ const login = async(req, res = response) => {
     try {
 
         //Verificar email
-        const user = await User.findOne({ email })
+        const patient = await Patient.findOne({ email })
 
-        if(!user)
+        if(!patient)
         {
             return res.status(400).json({
-                msg:'User or password incorrect'
+                msg:'Patient or password incorrect'
             })
         }
 
-        //Verificar user active
-        if(!user.state)
+        //Verificar patient active
+        if(!patient.state)
         {
             return res.status(400).json({
-                msg:"User doesn't exist"
+                msg:"Patient doesn't exist"
             })
         }
         
         //Verificar password
-        const validPassword = bcryptjs.compareSync(password, user.password);
+        const validPassword = bcryptjs.compareSync(password, patient.password);
         if(!validPassword)
         {
             return res.status(400).json({
-                msg:'User or password incorrect'
+                msg:'Patient or password incorrect'
             })
         }
 
         //Generar JWT
-        const token = await generateJWT( user.id );        
+        const token = await generateJWT( patient.id );        
 
         res.status(500).json({
-            user,
+            patient,
             token
         })
  
@@ -68,36 +68,36 @@ const googleSignIn = async(req, res = response) => {
 
         const {name, email, img} = payload;
 
-        let user = await User.findOne({ email });
+        let patient = await Patient.findOne({ email });
 
 
-        if(!!!user)
+        if(!patient)
         {
             const data = {
                 name,
                 email,
-                password:"asd",
+                password:"******",
                 img,
                 google:true,
                 role:'USER_ROLE'
             }
-            user = new User( data );
-            await user.save().catch( console.log )
+            patient = new Patient( data );
+            await patient.save().catch( console.log )
         }
 
-        if( !user.state )
+        if( !patient.state )
         {
             return res.status(401).json({
-                error:'This user was been blocked'
+                error:'This patient was been eliminated'
             })
         }
 
 
         //Generar JWT
-        const token = await generateJWT( user.uid );
+        const token = await generateJWT( patient.uid );
 
         res.json({
-            user,
+            patient,
             token
         })
 

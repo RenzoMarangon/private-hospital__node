@@ -1,14 +1,14 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { 
-    userGet, 
-    userPost,
-    userPut,
-    userDelete,
-    userListGet
+    patientGet, 
+    patientPost,
+    patientPut,
+    patientDelete,
+    patientListGet
 
-} = require('../controllers/user');
-const { isRoleInDB, isEmailInDB, isUserInDB } = require('../database/db-validators');
+} = require('../controllers/patient');
+const { isRoleInDB, isEmailInDB, isPatientInDB } = require('../database/db-validators');
 
 
 const { 
@@ -21,7 +21,9 @@ const {
 const router = Router();
 
 
-router.get('/', userListGet );
+router.get('/', patientListGet );
+
+router.get('/:id', patientGet );
 
 router.post('/',[
     check('name','Name is required').not().isEmpty(),
@@ -31,23 +33,23 @@ router.post('/',[
     check('role').custom( isRoleInDB ),
     check('email').custom( isEmailInDB ),
     validateErrors
-], userPost);
+], patientPost);
 
 router.put('/:id',[
-    check('id').custom( isUserInDB ),
+    check('id').custom( isPatientInDB ),
     check('id').isMongoId(),
     check('role').custom( isRoleInDB ),
     validateErrors
-],userPut)
+],patientPut)
 
 router.delete('/:id',[
     validateJWT,
     isAdminRole,
     // isRole('ADMIN_ROLE'),
-    check('id').custom( isUserInDB ),
+    check('id').custom( isPatientInDB ),
     check('id').isMongoId(),
     validateErrors
-], userDelete)
+], patientDelete)
 
 router.get('*',(req, res) => {
     res.send('404 | page not found'); 

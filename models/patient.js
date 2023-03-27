@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 
-const UsersSchema = Schema({
+const PatientSchema = Schema({
     name:{
         type: String,
         required: [true,'Name required']
@@ -20,8 +20,9 @@ const UsersSchema = Schema({
     },
     role:{
         type: String,
-        required: [true,'Name required'],
-        emun: ['ADMIN_ROLE','USER_ROLE']
+        required: true,
+        default: 'USER_ROLE',
+        // emun: ['ADMIN_ROLE', 'USER_ROLE']
     },
     google:{
         type:Boolean,
@@ -34,12 +35,12 @@ const UsersSchema = Schema({
 });
 
 
-UsersSchema.methods.toJSON = function(){
-    const { __v, _id , password, google,...user } = this.toObject();
-    user.uid = _id;
-    return user;
+PatientSchema.methods.toJSON = function(){
+    const { __v, _id , password, google,...patient } = this.toObject();
+    patient.uid = _id;
+    return patient;
 
 }
 
 
-module.exports = model('User', UsersSchema);
+module.exports = model('Patient', PatientSchema);

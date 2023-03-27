@@ -1,6 +1,6 @@
 const { response } = require('express');
 const jwt = require('jsonwebtoken');
-const User = require('../models/users');
+const Patient = require('../models/patient');
 
 const validateJWT = async( req, res = response, next) => {
     
@@ -19,23 +19,23 @@ const validateJWT = async( req, res = response, next) => {
         const { uid } = jwt.verify( token,process.env.SECRETORPRIVATEKEY );
         req.uid = uid; 
 
-        //Leer user que corresponde al ID
-        const user = await User.findById( uid );
-        req.authenticatedUser = user;
+        //Leer patient que corresponde al ID
+        const patient = await Patient.findById( uid );
+        req.authenticatedPatient = patient;
 
         //Verificar si existe
-        if(!user)
+        if(!patient)
         {
             return res.status(401).json({
-                msg:"User don't exist"
+                msg:"Patient don't exist"
             })
         }
 
-        //Verificar si user : true
-        if( !user.state )
+        //Verificar si patient : true
+        if( !patient.state )
         {
             return res.status(401).json({
-                msg:"User don't exist"
+                msg:"Patient don't exist"
             })
         }
 
