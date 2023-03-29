@@ -10,6 +10,10 @@ const TurnSchema = Schema({
         type:String,
         required: true,
     },
+    specialization:{
+        type:String,
+        required:true,
+    },
     patient:{
         type: Schema.Types.ObjectId,
         ref:'Patient',

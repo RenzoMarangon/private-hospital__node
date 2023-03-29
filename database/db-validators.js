@@ -2,7 +2,6 @@ const Role = require('../models/role');
 const Patient = require('../models/patient');
 const Turn = require('../models/turn');
 
-const moment = require('moment')
 
 const isRoleInDB = async(role = '') => {
     const roleExist = await Role.findOne({ role });
@@ -32,18 +31,13 @@ const isPatientInDB = async( id ) => {
     }
 }
 
-const timeIsValid = ( date, time ) => {
+const isTurnInDb = async( id ) => {
+    const turnExist = await Turn.findById( id );
 
-    if(!moment( `${date} ${time}`, 'YYYY-MM-DD HH:mm',true ),isValid() ){
-        throw new Error(`Date or time are wrong`);
+    if( !turnExist )
+    {
+        throw new Error(`Turn with id: ${ id } doesn't exist`);
     }
-
-}
-
-
-const isTimeInDB = () => {
-
-
 }
 
 
@@ -53,5 +47,5 @@ module.exports = {
     isRoleInDB,
     isEmailInDB,
     isPatientInDB,
-    timeIsValid
+    isTurnInDb
 }

@@ -11,6 +11,12 @@ const PatientSchema = Schema({
         required: [true,'Email required'],
         unique: true
     },
+    dni:{
+        type:Number,
+        // required: [true,'DNI required'],
+        // unique: true
+
+    },
     password:{
         type: String,
         required: [true,'Password required']
@@ -31,6 +37,9 @@ const PatientSchema = Schema({
     state:{
         type:Boolean,
         default:true,
+    },
+    turn:{
+        type:Array
     }
 });
 
