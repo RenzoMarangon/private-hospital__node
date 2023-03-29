@@ -11,6 +11,7 @@ class Server {
             userPatients : '/api/patient',
             auth          : '/api/auth',
             turns        : '/api/turn',
+            doctor        : '/api/doctor',
         }
 
         //Conectar a DB
@@ -28,6 +29,7 @@ class Server {
       this.app.use( this.paths.auth, require('../routes/auth') );
       this.app.use( this.paths.userPatients, require('../routes/userPacientes') );
       this.app.use( this.paths.turns, require('../routes/turn') );
+      this.app.use( this.paths.doctor, require('../routes/doctors') );
     }
 
 

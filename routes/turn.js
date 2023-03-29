@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 const { turnsGetAll, turnsGetOne, turnsPost, turnsPut, turnsDelete } = require('../controllers/turn');
 const { isRoleInDB, isTurnInDb } = require('../database/db-validators');
 const { validateErrors, validateJWT, isAdminRole } = require('../middlewares');
-const { verifyTurn, patientHaveTurn, turnHaveSpecialization } = require('../middlewares/validate-turn');
+const { verifyTurn, patientHaveTurn, turnHaveSpecialization, doctorHaveTurn } = require('../middlewares/validate-turn');
 
 
 const router = Router();
@@ -27,6 +27,7 @@ router.post('/',[
     validateJWT,
     verifyTurn,
     patientHaveTurn,
+    doctorHaveTurn,
     turnHaveSpecialization,
     isAdminRole,
     validateErrors

@@ -1,6 +1,7 @@
 const Role = require('../models/role');
 const Patient = require('../models/patient');
 const Turn = require('../models/turn');
+const Doctor = require('../models/doctor');
 
 
 const isRoleInDB = async(role = '') => {
@@ -31,6 +32,15 @@ const isPatientInDB = async( id ) => {
     }
 }
 
+const isDoctorInDB = async( id ) => {
+    const doctorExist = await Doctor.findById( id );
+
+    if( !doctorExist )
+    {
+        throw new Error(`Patient with id: ${ id } doesn't exist`);
+    }
+}
+
 const isTurnInDb = async( id ) => {
     const turnExist = await Turn.findById( id );
 
@@ -47,5 +57,6 @@ module.exports = {
     isRoleInDB,
     isEmailInDB,
     isPatientInDB,
-    isTurnInDb
+    isTurnInDb,
+    isDoctorInDB
 }

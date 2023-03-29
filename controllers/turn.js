@@ -3,6 +3,7 @@ const moment = require('moment');
 
 const Turn = require('../models/turn');
 const Patient = require('../models/patient');
+const Doctor = require('../models/doctor');
 
 const turnsGetAll = async( req, res = response ) => {
 
@@ -34,13 +35,18 @@ const turnsPost = async( req, res = response ) => {
 
     const turn = new Turn({ date, time, patient:patientID, specialization })
 
+    //Guardo el paciente
     const patient = await Patient.findById(patientID)
-
     patient.turn.push( { date, time, specialization, doctorID } )
+
+    //Guardo el doctor
+    const doctor = await Doctor.findById(doctorID);
+    doctor.turn.push({ date, time, specialization, doctorID })
 
     const promisesCollection = await Promise.all([
         turn.save(),
-        patient.save()
+        patient.save(),
+        doctor.save()
     ])
 
     res.json({
