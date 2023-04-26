@@ -2,6 +2,7 @@ const Role = require('../models/role');
 const Patient = require('../models/patient');
 const Turn = require('../models/turn');
 const Doctor = require('../models/doctor');
+const Specialization = require('../models/specialization');
 
 
 const isRoleInDB = async(role = '') => {
@@ -15,12 +16,16 @@ const isRoleInDB = async(role = '') => {
 
 const isEmailInDB = async(email = '') => {
     //Verificar si el correo existe
-    const emailExist = await Patient.findOne({ email })
-
-    if( emailExist )
+    const promiseCollection = await Promise.all([
+        Doctor.findOne({ email }),
+        Patient.findOne({ email })
+    ])
+    
+    if( promiseCollection[0] || promiseCollection[1])
     {
         throw new Error(`${ email } already exist`);
     }
+
 }
 
 const isPatientInDB = async( id ) => {
@@ -50,6 +55,15 @@ const isTurnInDb = async( id ) => {
     }
 }
 
+const isSpecializationInDb = async( specialization ) => {
+    const specializationExist = await Specialization.findOne( {specialization} );
+
+    if( !specializationExist )
+    {
+        throw new Error(`Specialization: ${ specialization } doesn't exist`);
+    }
+
+}
 
 
 
@@ -58,5 +72,6 @@ module.exports = {
     isEmailInDB,
     isPatientInDB,
     isTurnInDb,
-    isDoctorInDB
+    isDoctorInDB,
+    isSpecializationInDb
 }

@@ -18,7 +18,7 @@ const doctorGet = async( req, res = response ) => {
 
 
 const doctorListGet = async( req, res = response ) => {
-    const { page = 1, limit = 5 } = req.query;
+    const { page = 0, limit = 5 } = req.query;
 
     if( isNaN(page) || isNaN(limit) )
     {

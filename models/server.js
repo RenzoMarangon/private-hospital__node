@@ -8,10 +8,12 @@ class Server {
         this.port = process.env.PORT;
         this.paths = 
         {
-            userPatients : '/api/patient',
-            auth          : '/api/auth',
-            turns        : '/api/turn',
-            doctor        : '/api/doctor',
+            userPatients   : '/api/patient',
+            auth           : '/api/auth',
+            turns          : '/api/turn',
+            doctor         : '/api/doctor',
+            search         : '/api/search',
+            specialization : '/api/specialization',
         }
 
         //Conectar a DB
@@ -30,6 +32,8 @@ class Server {
       this.app.use( this.paths.userPatients, require('../routes/userPacientes') );
       this.app.use( this.paths.turns, require('../routes/turn') );
       this.app.use( this.paths.doctor, require('../routes/doctors') );
+      this.app.use( this.paths.search, require('../routes/search') );
+      this.app.use( this.paths.specialization, require('../routes/specialization') );
     }
 
 

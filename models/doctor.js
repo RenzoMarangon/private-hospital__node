@@ -38,7 +38,7 @@ const DoctorSchema = Schema({
         type:Array
     },
     specialization:{
-        type:String,
+        type: String,
         required:true
     }
 });

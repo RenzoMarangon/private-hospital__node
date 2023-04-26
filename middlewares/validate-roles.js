@@ -12,6 +12,7 @@ const isAdminRole = (req, res = response, next ) =>
 
     const { role, name } = req.authenticatedPatient;
 
+    console.log(role);
 
     if( role !== 'ADMIN_ROLE')
     {
