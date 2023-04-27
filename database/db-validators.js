@@ -66,6 +66,19 @@ const isSpecializationInDb = async( specialization ) => {
 }
 
 
+const collectionsAllowed = ( collection = '', collections = []) =>
+{
+
+    const includex = collections.includes( collection );
+
+    if( !includex)
+    {
+        throw new Error(`Collection ${ collection } is not allowed`);
+    }
+}
+
+
+
 
 module.exports = {
     isRoleInDB,
@@ -73,5 +86,6 @@ module.exports = {
     isPatientInDB,
     isTurnInDb,
     isDoctorInDB,
-    isSpecializationInDb
+    isSpecializationInDb,
+    collectionsAllowed
 }
